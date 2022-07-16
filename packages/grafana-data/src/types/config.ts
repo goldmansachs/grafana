@@ -41,6 +41,7 @@ export enum GrafanaEdition {
 export interface LicenseInfo {
   expiry: number;
   licenseUrl: string;
+  sourceUrl: string;
   stateInfo: string;
   edition: GrafanaEdition;
   enabledFeatures: { [key: string]: boolean };
