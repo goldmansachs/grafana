@@ -41,11 +41,17 @@ export let getVersionLinks = (): FooterLink[] => {
 
   links.push({ text: `${buildInfo.edition}${stateInfo}`, url: licenseInfo.licenseUrl });
 
+  links.push({
+    target: '_blank',
+    id: 'version',
+    text: `v${buildInfo.version} (${buildInfo.commit})`,
+    url: licenseInfo.sourceUrl
+  });
+
+
   if (buildInfo.hideVersion) {
     return links;
   }
-
-  links.push({ text: `v${buildInfo.version} (${buildInfo.commit})` });
 
   if (buildInfo.hasUpdate) {
     links.push({
