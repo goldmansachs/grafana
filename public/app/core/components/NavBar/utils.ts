@@ -59,6 +59,20 @@ export const enrichConfigItems = (items: NavModelItem[], location: Location<unkn
 
     if (link.id === 'help') {
       link.children = [
+        {
+          id: 'license',
+          text: 'Grafana License',
+          icon: 'license',
+          url: getConfig().licenseInfo.licenseUrl,
+          target: '_blank',
+        },
+        {
+          id: 'source',
+          text: 'Grafana Source Code',
+          icon: 'license',
+          url: getConfig().licenseInfo.sourceUrl,
+          target: '_blank',
+        },
         ...getFooterLinks(),
         {
           id: 'keyboard-shortcuts',
