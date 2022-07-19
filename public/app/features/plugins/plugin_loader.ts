@@ -31,6 +31,7 @@ import * as ticks from 'app/core/utils/ticks';
 import { GenericDataSourcePlugin } from '../datasources/settings/PluginSettings';
 
 import builtInPlugins from './built_in_plugins';
+import { importFederatedModule } from './federatedLoader';
 import { locateWithCache, registerPluginInCache } from './pluginCacheBuster';
 
 // Help the 6.4 to 6.5 migration
@@ -151,7 +152,12 @@ for (const flotDep of flotDeps) {
   exposeToPlugin(flotDep, { fakeDep: 1 });
 }
 
-export async function importPluginModule(path: string, version?: string): Promise<any> {
+export async function importPluginModule(
+  path: string,
+  id: string,
+  version?: string,
+  moduleLoader?: string
+): Promise<any> {
   if (version) {
     registerPluginInCache({ path, version });
   }
@@ -165,11 +171,19 @@ export async function importPluginModule(path: string, version?: string): Promis
       return builtIn;
     }
   }
+
+  if (moduleLoader === 'federated') {
+    console.log('Federated module found loading...');
+    return importFederatedModule({
+      scope: _.camelCase(id),
+      url: `/public/${path}.js`,
+    });
+  }
   return grafanaRuntime.SystemJS.import(path);
 }
 
 export function importDataSourcePlugin(meta: grafanaData.DataSourcePluginMeta): Promise<GenericDataSourcePlugin> {
-  return importPluginModule(meta.module, meta.info?.version).then((pluginExports) => {
+  return importPluginModule(meta.module, meta.id, meta.info?.version, meta?.moduleLoader).then((pluginExports) => {
     if (pluginExports.plugin) {
       const dsPlugin = pluginExports.plugin as GenericDataSourcePlugin;
       dsPlugin.meta = meta;
@@ -192,7 +206,7 @@ export function importDataSourcePlugin(meta: grafanaData.DataSourcePluginMeta): 
 }
 
 export function importAppPlugin(meta: grafanaData.PluginMeta): Promise<grafanaData.AppPlugin> {
-  return importPluginModule(meta.module, meta.info?.version).then((pluginExports) => {
+  return importPluginModule(meta.module, meta.id, meta.info?.version, meta.moduleLoader).then((pluginExports) => {
     const plugin = pluginExports.plugin ? (pluginExports.plugin as grafanaData.AppPlugin) : new grafanaData.AppPlugin();
     plugin.init(meta);
     plugin.meta = meta;

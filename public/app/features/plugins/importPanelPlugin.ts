@@ -34,7 +34,7 @@ export function syncGetPanelPlugin(id: string): PanelPlugin | undefined {
 }
 
 function getPanelPlugin(meta: PanelPluginMeta): Promise<PanelPlugin> {
-  return importPluginModule(meta.module, meta.info?.version)
+  return importPluginModule(meta.module, meta.id, meta.info?.version, meta?.moduleLoader)
     .then((pluginExports) => {
       if (pluginExports.plugin) {
         return pluginExports.plugin as PanelPlugin;
