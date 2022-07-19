@@ -141,6 +141,7 @@ func (hs *HTTPServer) GetPluginSettingByID(c *models.ReqContext) response.Respon
 		Includes:      plugin.Includes,
 		BaseUrl:       plugin.BaseURL,
 		Module:        plugin.Module,
+		ModuleLoader:  plugin.ModuleLoader,
 		DefaultNavUrl: path.Join(hs.Cfg.AppSubURL, plugin.DefaultNavURL),
 		State:         plugin.State,
 		Signature:     plugin.Signature,

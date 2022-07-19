@@ -11,6 +11,7 @@ type PluginSetting struct {
 	Enabled       bool                   `json:"enabled"`
 	Pinned        bool                   `json:"pinned"`
 	Module        string                 `json:"module"`
+	ModuleLoader  string                 `json:"moduleLoader"`
 	BaseUrl       string                 `json:"baseUrl"`
 	Info          plugins.Info           `json:"info"`
 	Includes      []*plugins.Includes    `json:"includes"`

@@ -453,6 +453,11 @@
           "default": false
         }
       }
+    },
+    "moduleLoader": {
+      "type": "string",
+      "description": "Set which frontend module loader to use",
+      "enum": ["federated", "systemjs"]
     }
   }
 }
