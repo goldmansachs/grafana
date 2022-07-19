@@ -93,6 +93,7 @@ export class PanelEditorQueries extends PureComponent<Props> {
     return (
       <QueryGroup
         options={options}
+        panel={panel}
         queryRunner={panel.getQueryRunner()}
         onRunQueries={this.onRunQueries}
         onOpenQueryInspector={this.onOpenQueryInspector}

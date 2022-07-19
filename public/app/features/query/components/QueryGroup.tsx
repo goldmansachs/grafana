@@ -18,6 +18,7 @@ import { PluginHelp } from 'app/core/components/PluginHelp/PluginHelp';
 import config from 'app/core/config';
 import { backendSrv } from 'app/core/services/backend_srv';
 import { addQuery } from 'app/core/utils/query';
+import { PanelModel } from 'app/features/dashboard/state';
 import { dataSource as expressionDatasource } from 'app/features/expressions/ExpressionDatasource';
 import { DashboardQueryEditor, isSharedDashboardQuery } from 'app/plugins/datasource/dashboard';
 import { QueryGroupOptions } from 'app/types';
@@ -35,6 +36,7 @@ interface Props {
   onOpenQueryInspector?: () => void;
   onRunQueries: () => void;
   onOptionsChange: (options: QueryGroupOptions) => void;
+  panel: PanelModel;
 }
 
 interface State {
@@ -169,7 +171,7 @@ export class QueryGroup extends PureComponent<Props, State> {
   };
 
   renderTopSection(styles: QueriesTabStyles) {
-    const { onOpenQueryInspector, options } = this.props;
+    const { onOpenQueryInspector, options, panel } = this.props;
     const { dataSource, data } = this.state;
 
     return (
@@ -186,6 +188,7 @@ export class QueryGroup extends PureComponent<Props, State> {
               mixed={true}
               dashboard={true}
               variables={true}
+              scopedVars={panel.scopedVars}
             />
           </div>
           {dataSource && (

@@ -202,7 +202,7 @@ export class DatasourceSrv implements DataSourceService {
     return Object.values(this.settingsMapByName);
   }
 
-  getList(filters: GetDataSourceListFilters = {}): DataSourceInstanceSettings[] {
+  getList(filters: GetDataSourceListFilters = {}, scopedVars: ScopedVars): DataSourceInstanceSettings[] {
     const base = Object.values(this.settingsMapByName).filter((x) => {
       if (x.meta.id === 'grafana' || x.meta.id === 'mixed' || x.meta.id === 'dashboard') {
         return false;
@@ -246,7 +246,12 @@ export class DatasourceSrv implements DataSourceService {
 
     if (filters.variables) {
       for (const variable of this.templateSrv.getVariables()) {
-        if (!isDataSource(variable) || variable.multi || variable.includeAll) {
+        if (!isDataSource(variable)) {
+          continue;
+        }
+
+        // Figure out how to add scopedVars into base
+        if (!scopedVars[variable.name] && (variable.multi || variable.includeAll)) {
           continue;
         }
         const dsName = variable.current.value === 'default' ? this.defaultName : variable.current.value;

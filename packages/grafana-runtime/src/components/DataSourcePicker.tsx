@@ -7,6 +7,8 @@ import {
   DataSourceRef,
   getDataSourceUID,
   isUnsignedPluginSignature,
+  PanelModel,
+  ScopedVars,
   SelectableValue,
 } from '@grafana/data';
 import { selectors } from '@grafana/e2e-selectors';
@@ -46,6 +48,7 @@ export interface DataSourcePickerProps {
   inputId?: string;
   filter?: (dataSource: DataSourceInstanceSettings) => boolean;
   onClear?: () => void;
+  scopedVars?: ScopedVars;
 }
 
 /**
@@ -133,23 +136,38 @@ export class DataSourcePicker extends PureComponent<DataSourcePickerProps, DataS
   }
 
   getDataSourceOptions() {
-    const { alerting, tracing, metrics, mixed, dashboard, variables, annotations, pluginId, type, filter, logs } =
-      this.props;
+    const {
+      alerting,
+      tracing,
+      metrics,
+      mixed,
+      dashboard,
+      variables,
+      annotations,
+      pluginId,
+      type,
+      filter,
+      logs,
+      scopedVars,
+    } = this.props;
 
     const options = this.dataSourceSrv
-      .getList({
-        alerting,
-        tracing,
-        metrics,
-        logs,
-        dashboard,
-        mixed,
-        variables,
-        annotations,
-        pluginId,
-        filter,
-        type,
-      })
+      .getList(
+        {
+          alerting,
+          tracing,
+          metrics,
+          logs,
+          dashboard,
+          mixed,
+          variables,
+          annotations,
+          pluginId,
+          filter,
+          type,
+        },
+        scopedVars
+      )
       .map((ds) => ({
         value: ds.name,
         label: `${ds.name}${ds.isDefault ? ' (default)' : ''}`,
