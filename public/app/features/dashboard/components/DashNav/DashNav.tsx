@@ -5,6 +5,8 @@ import { useLocation } from 'react-router-dom';
 import { locationUtil, textUtil } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
 import { ButtonGroup, ModalsController, ToolbarButton, PageToolbar, useForceUpdate } from '@grafana/ui';
+import { AppChromeUpdate } from 'app/core/components/AppChrome/AppChromeUpdate';
+import { NavToolbarSeparator } from 'app/core/components/AppChrome/NavToolbarSeparator';
 import config from 'app/core/config';
 import { toggleKioskMode } from 'app/core/navigation/kiosk';
 import { DashboardCommentsModal } from 'app/features/dashboard/components/DashboardComments/DashboardCommentsModal';
@@ -14,6 +16,7 @@ import { playlistSrv } from 'app/features/playlist/PlaylistSrv';
 import { updateTimeZoneForSession } from 'app/features/profile/state/reducers';
 import { KioskMode } from 'app/types';
 
+import { setStarred } from '../../../../core/reducers/navBarTree';
 import { getDashboardSrv } from '../../services/DashboardSrv';
 import { DashboardModel } from '../../state';
 
@@ -21,6 +24,7 @@ import { DashNavButton } from './DashNavButton';
 import { DashNavTimeControls } from './DashNavTimeControls';
 
 const mapDispatchToProps = {
+  setStarred,
   updateTimeZoneForSession,
 };
 
@@ -60,9 +64,10 @@ export const DashNav = React.memo<Props>((props) => {
 
   const onStarDashboard = () => {
     const dashboardSrv = getDashboardSrv();
-    const { dashboard } = props;
+    const { dashboard, setStarred } = props;
 
     dashboardSrv.starDashboard(dashboard.id, dashboard.meta.isStarred).then((newState: any) => {
+      setStarred({ id: dashboard.uid, title: dashboard.title, url: dashboard.meta.url ?? '', isStarred: newState });
       dashboard.meta.isStarred = newState;
       forceUpdate();
     });
@@ -105,7 +110,7 @@ export const DashNav = React.memo<Props>((props) => {
     return playlistSrv.isPlaying;
   };
 
-  const renderLeftActionsButton = () => {
+  const renderLeftActions = () => {
     const { dashboard, kioskMode } = props;
     const { canStar, canShare, isStarred } = dashboard.meta;
     const buttons: ReactNode[] = [];
@@ -195,7 +200,7 @@ export const DashNav = React.memo<Props>((props) => {
     );
   };
 
-  const renderRightActionsButton = () => {
+  const renderRightActions = () => {
     const { dashboard, onAddPanel, isFullscreen, kioskMode } = props;
     const { canSave, canEdit, showSettings } = dashboard.meta;
     const { snapshot } = dashboard;
@@ -271,6 +276,21 @@ export const DashNav = React.memo<Props>((props) => {
   const parentHref = locationUtil.getUrlForPartial(location, { search: 'open', folder: 'current' });
   const onGoBack = isFullscreen ? onClose : undefined;
 
+  if (config.featureToggles.topnav) {
+    return (
+      <AppChromeUpdate
+        pageNav={{ text: title }}
+        actions={
+          <>
+            {renderLeftActions()}
+            <NavToolbarSeparator leftActionsSeparator />
+            {renderRightActions()}
+          </>
+        }
+      />
+    );
+  }
+
   return (
     <PageToolbar
       pageIcon={isFullscreen ? undefined : 'apps'}
@@ -279,9 +299,9 @@ export const DashNav = React.memo<Props>((props) => {
       titleHref={titleHref}
       parentHref={parentHref}
       onGoBack={onGoBack}
-      leftItems={renderLeftActionsButton()}
+      leftItems={renderLeftActions()}
     >
-      {renderRightActionsButton()}
+      {renderRightActions()}
     </PageToolbar>
   );
 });
