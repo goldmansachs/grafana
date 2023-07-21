@@ -85,6 +85,9 @@ COPY --from=js-builder /grafana/public ./public
 COPY public/build/static/source*.tar.gz ./public/build/static/
 COPY --from=js-builder /grafana/tools ./tools
 
+USER grafana
+RUN grafana-cli plugins install neocat-cal-heatmap-panel 0.0.4
+
 EXPOSE 3000
 
 COPY ./packaging/docker/run.sh /run.sh
