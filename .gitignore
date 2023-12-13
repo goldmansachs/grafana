@@ -7,6 +7,8 @@ awsconfig
 /.awcache
 /dist
 /public/build
+/public/views/index.html
+/public/views/error.html
 /emails/dist
 /reports
 /e2e/tmp
@@ -212,3 +214,7 @@ public/app/plugins/**/dist/
 # Ignore transpiled JavaScript resulting from the generate-transformations.ts script.
 /public/app/features/transformers/docs/*.js
 /scripts/docs/generate-transformations.js
+
+
+build_dir/
+grafana-dist/

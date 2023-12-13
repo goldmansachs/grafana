@@ -1,6 +1,8 @@
 package licensing
 
 import (
+	"fmt"
+
 	"github.com/grafana/grafana/pkg/api/dtos"
 	contextmodel "github.com/grafana/grafana/pkg/services/contexthandler/model"
 	"github.com/grafana/grafana/pkg/services/hooks"
@@ -34,11 +36,11 @@ func (*OSSLicensingService) ContentDeliveryPrefix() string {
 }
 
 func (l *OSSLicensingService) LicenseURL(showAdminLicensingPage bool) string {
-	if showAdminLicensingPage {
-		return l.Cfg.AppSubURL + "/admin/upgrading"
-	}
+	return fmt.Sprintf("https://github.com/goldmansachs/grafana/blob/%v/LICENSING.md", setting.BuildCommit)
+}
 
-	return "https://grafana.com/oss/grafana?utm_source=grafana_footer"
+func (l *OSSLicensingService) SourceURL() string {
+	return fmt.Sprintf("/public/build/static/source_%v.tar.gz", setting.BuildCommit)
 }
 
 func (*OSSLicensingService) EnabledFeatures() map[string]bool {

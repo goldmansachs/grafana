@@ -124,6 +124,13 @@ export function getEditionAndUpdateLinks(): NavModelItem[] {
     text: `${buildInfo.edition}${stateInfo}`,
     url: licenseInfo.licenseUrl,
     icon: 'external-link-alt',
+  },
+  {
+    id: 'source',
+    text: 'Grafana Source Code',
+    icon: 'license',
+    url: licenseInfo.sourceUrl,
+    target: '_blank',
   });
 
   if (buildInfo.hasUpdate) {

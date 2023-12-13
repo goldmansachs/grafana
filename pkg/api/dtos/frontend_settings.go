@@ -48,6 +48,7 @@ type FrontendSettingsLicenseInfoDTO struct {
 	Expiry          int64           `json:"expiry"`
 	StateInfo       string          `json:"stateInfo"`
 	LicenseUrl      string          `json:"licenseUrl"`
+	SourceUrl       string          `json:"sourceUrl"`
 	Edition         string          `json:"edition"`
 	EnabledFeatures map[string]bool `json:"enabledFeatures"`
 
