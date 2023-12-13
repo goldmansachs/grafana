@@ -36,6 +36,11 @@ func (f *FakeLicensing) LicenseURL(showAdminLicensingPage bool) string {
 	return mockedArgs.Get(0).(string)
 }
 
+func (f *FakeLicensing) SourceURL() string {
+	mockedArgs := f.Called()
+	return mockedArgs.Get(0).(string)
+}
+
 func (f *FakeLicensing) StateInfo() string {
 	mockedArgs := f.Called()
 	return mockedArgs.Get(0).(string)

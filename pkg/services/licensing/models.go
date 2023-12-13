@@ -12,6 +12,9 @@ type Licensing interface {
 
 	LicenseURL(showAdminLicensingPage bool) string
 
+	// A link to the complete corresponding source
+	SourceURL() string
+	
 	StateInfo() string
 
 	EnabledFeatures() map[string]bool

@@ -7,7 +7,7 @@ WIRE_TAGS = "oss"
 -include local/Makefile
 include .bingo/Variables.mk
 
-.PHONY: all deps-go deps-js deps build-go build-backend build-server build-cli build-js build build-docker-full build-docker-full-ubuntu lint-go golangci-lint test-go test-js gen-ts test run run-frontend clean devenv devenv-down protobuf drone help gen-go gen-cue fix-cue
+.PHONY: all deps-go deps-js deps build-go build-backend build-server build-cli build-js build build-docker-full build-docker-full-ubuntu lint-go golangci-lint test-go test-js gen-ts test run run-frontend clean devenv devenv-down protobuf drone help gen-go gen-cue fix-cue dist build_from_dist push_from_dist
 
 GO = go
 GO_FILES ?= ./pkg/...
@@ -110,6 +110,7 @@ gen-cue: ## Do all CUE/Thema code generation
 
 gen-go: $(WIRE)
 	@echo "generate go files"
+	@export WIRE_VERBOSE=true
 	$(WIRE) gen -tags $(WIRE_TAGS) ./pkg/server
 
 fix-cue: $(CUE)
@@ -338,3 +339,24 @@ format-drone:
 
 help: ## Display this help.
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
+# AGPL helpers
+# Show all edits since an upstream commit.
+BASE_COMMIT=5f1eccdb4da646b4122c3eb815290b2b025188fe
+dist:
+	rm -rf grafana-dist
+	git archive --format=tar --prefix=grafana-dist/ $(BASE_COMMIT) | tar -xf -
+	mkdir grafana-dist/patches
+	git format-patch -o grafana-dist/patches/ $(BASE_COMMIT)
+	# Set a default version in our build.
+	sed -ibak s,unknown-dev,$(shell git rev-parse HEAD), grafana-dist/pkg/build/git.go
+
+	# And produce the output.
+	mkdir -p public/build/static
+	tar -czf public/build/static/source_$(shell git rev-parse HEAD).tar.gz grafana-dist/
+
+build_from_dist: dist
+	./build.sh public/build/static/source_$(shell git rev-parse HEAD).tar.gz 10-ubi8-10.2.6-1
+
+push_from_dist: build_from_dist
+	docker push ghcr.io/goldmansachs/grafana:10-ubi8-10.2.6-1
