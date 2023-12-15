@@ -101,6 +101,18 @@ WORKDIR $GF_PATHS_HOME
 USER root
 
 RUN microdnf install shadow-utils
+RUN microdnf install wget
+RUN microdnf install tar
+RUN microdnf install gzip
+
+# setup plugins dir
+RUN mkdir -p plugins/
+
+# sysdig plugin
+RUN mkdir -p plugins/sysdig/
+RUN wget "https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.8.tgz"
+RUN tar -xvf grafana-sysdig-datasource-v0.8.tgz
+RUN mv -f sysdig/* plugins/sysdig && rm -r /usr/share/grafana/grafana-sysdig-datasource-v0.8.tgz && rm -r /usr/share/grafana/sysdig
 
 COPY --from=go-src /tmp/grafana/conf ./conf
 
