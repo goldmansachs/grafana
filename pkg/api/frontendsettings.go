@@ -169,6 +169,7 @@ func (hs *HTTPServer) getFrontendSettings(c *contextmodel.ReqContext) (*dtos.Fro
 			Expiry:          hs.License.Expiry(),
 			StateInfo:       hs.License.StateInfo(),
 			LicenseUrl:      hs.License.LicenseURL(hasAccess(accesscontrol.ReqGrafanaAdmin, licensing.PageAccess)),
+			SourceUrl:       hs.License.SourceURL(),
 			Edition:         hs.License.Edition(),
 			EnabledFeatures: hs.License.EnabledFeatures(),
 		},
