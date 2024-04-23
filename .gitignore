@@ -207,6 +207,7 @@ deployment_tools_config.json
 
 # Temporary file for backporting PRs
 .pr-body.txt
+<<<<<<< HEAD
 
 # Core plugin builds
 public/app/plugins/**/dist/
@@ -216,5 +217,7 @@ public/app/plugins/**/dist/
 /scripts/docs/generate-transformations.js
 
 
+=======
+>>>>>>> 0a3cb470e8 (Add scripts to support scripted and embedded dashboards)
 build_dir/
 grafana-dist/
