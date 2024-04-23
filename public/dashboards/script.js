@@ -317,6 +317,9 @@ var executeScriptedDashboard = function(scriptedDashboardApiResult, callbackFunc
 
 var handleScriptedDashboardResult = function (scriptedDashboardResult, callbackFunction) {
   var dashboardObj = scriptedDashboardResult.data;
+  if (! dashboardObj.annotations) {
+    dashboardObj.annotations = {};
+  }
   // This API converts Grafana1 dashboard to Grafana5
   var dashboardConvertUrl = '/api/datasources/proxy/1/grafana/dashboards/convert';
   if (dashboardObj.panels) {
