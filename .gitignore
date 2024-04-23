@@ -194,6 +194,5 @@ deployment_tools_config.json
 
 # Temporary file for backporting PRs
 .pr-body.txt
-
 build_dir/
 grafana-dist/
