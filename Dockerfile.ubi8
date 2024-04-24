@@ -84,7 +84,7 @@ ENV PATH="/usr/share/grafana/bin:$PATH" \
   GF_PATHS_DATA="/var/lib/grafana" \
   GF_PATHS_HOME="/usr/share/grafana" \
   GF_PATHS_LOGS="/var/log/grafana" \
-  GF_PATHS_PLUGINS="/var/lib/grafana/plugins" \
+  GF_PATHS_PLUGINS="/usr/share/grafana/plugins" \
   GF_PATHS_PROVISIONING="/etc/grafana/provisioning"
 
 WORKDIR $GF_PATHS_HOME
@@ -94,6 +94,7 @@ RUN microdnf install shadow-utils
 RUN microdnf install wget
 RUN microdnf install tar
 RUN microdnf install gzip
+RUN microdnf install unzip
 
 # setup plugins dir
 RUN mkdir -p plugins/
@@ -103,6 +104,18 @@ RUN mkdir -p plugins/sysdig/
 RUN wget "https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.8.tgz"
 RUN tar -xvf grafana-sysdig-datasource-v0.8.tgz
 RUN mv -f sysdig/* plugins/sysdig && rm -r /usr/share/grafana/grafana-sysdig-datasource-v0.8.tgz && rm -r /usr/share/grafana/sysdig
+
+# json plugin
+RUN mkdir -p plugins/marcusolsson-json-datasource
+RUN wget "https://github.com/grafana/grafana-json-datasource/releases/download/v1.3.14/marcusolsson-json-datasource-1.3.14.zip"
+RUN unzip marcusolsson-json-datasource-1.3.14.zip
+RUN mv -f marcusolsson-json-datasource/* plugins/marcusolsson-json-datasource && rm -r /usr/share/grafana/marcusolsson-json-datasource-1.3.14.zip && rm -r /usr/share/grafana/marcusolsson-json-datasource
+
+# treemap plugin
+RUN mkdir -p plugins/marcusolsson-treemap-panel
+RUN wget "https://github.com/grafana/grafana-treemap-panel/releases/download/v2.0.1/marcusolsson-treemap-panel-2.0.1.zip"
+RUN unzip marcusolsson-treemap-panel-2.0.1.zip
+RUN mv -f marcusolsson-treemap-panel/* plugins/marcusolsson-treemap-panel && rm -r /usr/share/grafana/marcusolsson-treemap-panel-2.0.1.zip && rm -r /usr/share/grafana/marcusolsson-treemap-panel
 
 COPY conf ./conf
 
