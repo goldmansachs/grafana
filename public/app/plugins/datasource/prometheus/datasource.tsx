@@ -150,7 +150,6 @@ export class PrometheusDatasource
   }
 
   init = async () => {
-    this.loadRules();
     this.exemplarsAvailable = await this.areExemplarsAvailable();
   };
 
@@ -1093,20 +1092,6 @@ export class PrometheusDatasource
 
   getInitHints() {
     return getInitHints(this);
-  }
-
-  async loadRules() {
-    try {
-      const res = await this.metadataRequest('/api/v1/rules', {}, { showErrorAlert: false });
-      const groups = res.data?.data?.groups;
-
-      if (groups) {
-        this.ruleMappings = extractRuleMappingFromGroups(groups);
-      }
-    } catch (e) {
-      console.log('Rules API is experimental. Ignore next error.');
-      console.error(e);
-    }
   }
 
   async areExemplarsAvailable() {
