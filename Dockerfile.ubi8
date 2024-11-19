@@ -100,10 +100,7 @@ ENV PATH="/usr/share/grafana/bin:$PATH" \
 WORKDIR $GF_PATHS_HOME
 USER root
 
-RUN microdnf install shadow-utils
-RUN microdnf install wget
-RUN microdnf install tar
-RUN microdnf install gzip
+RUN microdnf upgrade --refresh -y && microdnf install shadow-utils wget tar gzip
 
 # setup plugins dir
 RUN mkdir -p plugins/
