@@ -110,6 +110,12 @@ RUN microdnf install unzip
 # setup plugins dir
 RUN mkdir -p plugins/
 
+# pulse telemetry api plugin
+RUN mkdir -p plugins/pulse-telemapi-plugin/
+RUN wget https://github.com/goldmansachs/pulse-telemapi-plugin/releases/download/v1.1.0/build.zip
+RUN unzip build.zip
+RUN mv -f build/dist/* plugins/pulse-telemapi-plugin/ && rm -r /usr/share/grafana/build.zip && rm -r /usr/share/grafana/build
+
 # sysdig plugin
 RUN mkdir -p plugins/sysdig/
 RUN wget "https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.8.tgz"
