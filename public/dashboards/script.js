@@ -9,7 +9,7 @@ var sysdigService = function($) {
   var backendId = ARGS['backend'];
   var backend = "default";
 
-  if (backendId.match("prod[2-9]$")) {
+  if (backendId && backendId.match("prod[2-9]$")) {
     backend = "Sysdig Prod" + backendId.at(4);
   } else if (backendId == "prod1") {
     backend = "Sysdig Prod";
