@@ -122,6 +122,12 @@ RUN wget "https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-s
 RUN tar -xvf grafana-sysdig-datasource-v0.8.tgz
 RUN mv -f sysdig/* plugins/sysdig && rm -r /usr/share/grafana/grafana-sysdig-datasource-v0.8.tgz && rm -r /usr/share/grafana/sysdig
 
+# bigquery plugin
+RUN mkdir -p plugins/bigquery/
+RUN wget https://github.com/goldmansachs/bigquery-grafana-plugin/releases/download/gs_v2.0.2/build.zip
+RUN unzip build.zip
+RUN mv -f build/dist/* plugins/bigquery/ && rm -r /usr/share/grafana/build.zip && rm -r /usr/share/grafana/build
+
 # json plugin
 RUN mkdir -p plugins/marcusolsson-json-datasource
 RUN wget "https://github.com/grafana/grafana-json-datasource/releases/download/v1.3.14/marcusolsson-json-datasource-1.3.14.zip"
@@ -173,5 +179,5 @@ ARG RUN_SH=./packaging/docker/run.sh
 
 COPY ${RUN_SH} /run.sh
 
-USER "$GF_UID"
+USER grafana
 ENTRYPOINT [ "/run.sh" ]
