@@ -140,6 +140,12 @@ RUN wget "https://github.com/grafana/grafana-treemap-panel/releases/download/v2.
 RUN unzip marcusolsson-treemap-panel-2.0.1.zip
 RUN mv -f marcusolsson-treemap-panel/* plugins/marcusolsson-treemap-panel && rm -r /usr/share/grafana/marcusolsson-treemap-panel-2.0.1.zip && rm -r /usr/share/grafana/marcusolsson-treemap-panel
 
+# opensearch plugin
+RUN mkdir -p plugins/grafana-opensearch-plugin
+RUN wget "https://github.com/grafana/opensearch-datasource/releases/download/v2.16.1/grafana-opensearch-datasource-2.16.1.zip"
+RUN unzip grafana-opensearch-datasource-2.16.1.zip -d plugins/grafana-opensearch-plugin
+RUN rm -r /usr/share/grafana/grafana-opensearch-datasource-2.16.1.zip
+
 COPY conf ./conf
 
 RUN export GF_GID_NAME=$(getent group $GF_GID | cut -d':' -f1) && \
