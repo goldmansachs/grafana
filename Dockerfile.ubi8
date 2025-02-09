@@ -100,16 +100,7 @@ ENV PATH="/usr/share/grafana/bin:$PATH" \
 WORKDIR $GF_PATHS_HOME
 USER root
 
-RUN microdnf upgrade --refresh -y && microdnf install shadow-utils wget tar gzip
-
-# setup plugins dir
-RUN mkdir -p plugins/
-
-# sysdig plugin
-RUN mkdir -p plugins/sysdig/
-RUN wget "https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.8.tgz"
-RUN tar -xvf grafana-sysdig-datasource-v0.8.tgz
-RUN mv -f sysdig/* plugins/sysdig && rm -r /usr/share/grafana/grafana-sysdig-datasource-v0.8.tgz && rm -r /usr/share/grafana/sysdig
+RUN microdnf upgrade --refresh -y && microdnf install shadow-utils
 
 COPY --from=go-src /tmp/grafana/conf ./conf
 
@@ -133,6 +124,13 @@ RUN export GF_GID_NAME=$(getent group $GF_GID | cut -d':' -f1) && \
 COPY --from=go-src /tmp/grafana/bin/grafana* /tmp/grafana/bin/*/grafana* ./bin/
 COPY --from=js-src /tmp/grafana/public ./public
 COPY --from=go-src /tmp/grafana/LICENSE ./
+
+# Additional plugins
+RUN mkdir -p plugins
+RUN grafana cli --pluginsDir ./plugins --pluginUrl https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.11.zip plugins install grafana-sysdig-datasource
+RUN grafana cli --pluginsDir ./plugins --pluginUrl https://github.com/goldmansachs/bigquery-grafana-plugin/releases/download/gs_v1.9.2/grafana-bigquery-datasource-1.9.2.zip plugins install grafana-bigquery-datasource
+RUN grafana cli --pluginsDir ./plugins plugins install michaeldmoore-multistat-panel
+RUN grafana cli --pluginsDir ./plugins plugins install marcusolsson-dynamictext-panel
 
 USER grafana
 RUN grafana cli plugins install neocat-cal-heatmap-panel 0.0.4
