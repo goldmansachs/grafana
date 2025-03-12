@@ -186,7 +186,7 @@ const getStyles = (theme: GrafanaTheme2) => {
     `,
     mask: css`
       background-color: ${theme.components.overlay.background} !important;
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(0px);
     `,
     maskMotion: css`
       &-appear {

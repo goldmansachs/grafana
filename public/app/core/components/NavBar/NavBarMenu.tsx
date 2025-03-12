@@ -105,7 +105,7 @@ NavBarMenu.displayName = 'NavBarMenu';
 
 const getStyles = (theme: GrafanaTheme2) => ({
   backdrop: css({
-    backdropFilter: 'blur(1px)',
+    backdropFilter: 'blur(0px)',
     backgroundColor: theme.components.overlay.background,
     bottom: 0,
     left: 0,
