@@ -113,7 +113,7 @@ const getStyles = (theme: GrafanaTheme2, searchBarHidden?: boolean) => {
 
   return {
     backdrop: css({
-      backdropFilter: 'blur(1px)',
+      backdropFilter: 'blur(0px)',
       backgroundColor: theme.components.overlay.background,
       bottom: 0,
       left: 0,
