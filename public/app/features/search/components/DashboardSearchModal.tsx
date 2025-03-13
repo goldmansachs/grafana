@@ -148,7 +148,7 @@ const getStyles = (theme: GrafanaTheme2) => {
   return {
     underlay: css`
       background-color: ${theme.components.overlay.background};
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(0px);
       bottom: 0;
       left: 0;
       padding: 0;
