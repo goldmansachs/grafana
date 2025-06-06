@@ -128,7 +128,7 @@ COPY --from=go-src /tmp/grafana/LICENSE ./
 # Additional plugins
 RUN mkdir -p plugins
 RUN grafana cli --pluginsDir ./plugins --pluginUrl https://download.sysdig.com/stable/grafana-sysdig-datasource/grafana-sysdig-datasource-v0.11.zip plugins install grafana-sysdig-datasource
-RUN grafana cli --pluginsDir ./plugins --pluginUrl https://github.com/goldmansachs/bigquery-grafana-plugin/releases/download/gs_v1.9.4/grafana-bigquery-datasource-1.9.2.zip plugins install grafana-bigquery-datasource
+RUN grafana cli --pluginsDir ./plugins --pluginUrl https://github.com/goldmansachs/bigquery-grafana-plugin/releases/download/gs_v1.9.5/grafana-bigquery-datasource-1.9.2.zip plugins install grafana-bigquery-datasource
 RUN grafana cli --pluginsDir ./plugins plugins install michaeldmoore-multistat-panel
 RUN grafana cli --pluginsDir ./plugins plugins install marcusolsson-dynamictext-panel
 

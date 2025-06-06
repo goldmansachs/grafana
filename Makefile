@@ -355,7 +355,7 @@ dist:
 	tar -czf public/build/static/source_$(shell git rev-parse HEAD).tar.gz grafana-dist/
 
 build_from_dist: dist
-	./build.sh public/build/static/source_$(shell git rev-parse HEAD).tar.gz 10-ubi8-10.3.12-6
+	./build.sh public/build/static/source_$(shell git rev-parse HEAD).tar.gz 10-ubi8-10.3.12-7
 
 push_from_dist: build_from_dist
-	docker push ghcr.io/goldmansachs/grafana:10-ubi8-10.3.12-6
+	docker push ghcr.io/goldmansachs/grafana:10-ubi8-10.3.12-7
