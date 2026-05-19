@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
-ARG BASE_IMAGE=registry.access.redhat.com/ubi8/ubi-minimal:8.10-1756195339
-ARG JS_IMAGE=registry.access.redhat.com/ubi8/nodejs-20-minimal:1-78
+ARG BASE_IMAGE=registry.access.redhat.com/ubi8/ubi-minimal:8.10-1778735208
+ARG JS_IMAGE=registry.access.redhat.com/ubi8/nodejs-20-minimal:1-1778604752
 ARG JS_PLATFORM=linux/amd64
 ARG GO_IMAGE=golang:1.22.7-bullseye
 
